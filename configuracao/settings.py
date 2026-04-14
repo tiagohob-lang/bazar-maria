@@ -38,8 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
-    'django.contrib.staticfiles',
     'cloudinary_storage',
+    'django.contrib.staticfiles',
     'cloudinary',
     'core',
 ]
@@ -121,10 +121,11 @@ USE_TZ = True
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
+# Essas variáveis vão ler o que configurarmos no Render
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': 'Root',
-    'API_KEY': '598351497964753',
-    'API_SECRET': '2Q33pKZG3ZkvFvRDj9zfoooZxfg'
+    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
+    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
 }
 
 STATIC_URL = '/static/'
