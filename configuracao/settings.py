@@ -136,3 +136,6 @@ MEDIA_URL = '/media/'
 
 # Local onde as imagens ficam temporariamente antes de ir para a nuvem
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+print(f"DEBUG: Cloudinary Name é {os.environ.get('CLOUDINARY_CLOUD_NAME')}")
+print(f"DEBUG: Storage atual é {DEFAULT_FILE_STORAGE}")
