@@ -29,7 +29,7 @@ SECRET_KEY = 'django-insecure-v5$6*s$_&p2^!l!%9k0k)cb-#&^1j)xxh=mc-y8z6mnj=o611!
 
 # SECURITY WARNING: don't run with debug turned on in production!
 #DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
-DEBUG = 'True'
+DEBUG = True
 
 ALLOWED_HOSTS = ['*']
 
@@ -135,7 +135,7 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # URL que o navegador vai usar para acessar as imagens
-#MEDIA_URL = '/media/'
+MEDIA_URL = '/media/'
 
 # Local onde as imagens ficam temporariamente antes de ir para a nuvem
 #MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
