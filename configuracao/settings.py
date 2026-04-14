@@ -28,7 +28,7 @@ SECRET_KEY = 'django-insecure-v5$6*s$_&p2^!l!%9k0k)cb-#&^1j)xxh=mc-y8z6mnj=o611!
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
 
-ALLOWED_HOSTS = ['https://bazar-maria.onrender.com', 'http://bazar-maria.onrender.com', 'localhost', '127.0.0.1']
+ALLOWED_HOSTS = ['*']
 
 # Application definition
 INSTALLED_APPS = [
