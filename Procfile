@@ -1,1 +1,1 @@
-web: gunicorn configuracao.wsgi --log-file -
+web: python manage.py migrate && python criar_admin.py && gunicorn configuracao.wsgi
