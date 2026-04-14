@@ -26,8 +26,8 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-v5$6*s$_&p2^!l!%9k0k)cb-#&^1j)xxh=mc-y8z6mnj=o611!'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
-#DEBUG = 'True'
+#DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
+DEBUG = 'True'
 
 ALLOWED_HOSTS = ['*']
 
@@ -128,6 +128,12 @@ CLOUDINARY_STORAGE = {
 """
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+
+# Isso impede que o Django ignore erros de upload. 
+# Se a conexão falhar, o site VAI travar e te mostrar o porquê.
+CLOUDINARY_STORAGE = {
+    'PREFIX': 'bazar_maria', # Apenas para organizar
+}
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
