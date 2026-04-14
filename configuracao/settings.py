@@ -15,6 +15,8 @@ from pathlib import Path
 
 import dj_database_url # Instale com: pip install dj-database-url
 
+import logging
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
@@ -133,10 +135,27 @@ STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 
 # URL que o navegador vai usar para acessar as imagens
-MEDIA_URL = '/media/'
+#MEDIA_URL = '/media/'
 
 # Local onde as imagens ficam temporariamente antes de ir para a nuvem
-MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+#MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
 print(f"DEBUG: Cloudinary Name é {os.environ.get('CLOUDINARY_CLOUD_NAME')}")
 print(f"DEBUG: Storage atual é {DEFAULT_FILE_STORAGE}")
+
+# Isso vai imprimir qualquer erro do Cloudinary direto no log do Render
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'handlers': {
+        'console': {
+            'class': 'logging.StreamHandler',
+        },
+    },
+    'loggers': {
+        'cloudinary_storage': {
+            'handlers': ['console'],
+            'level': 'DEBUG',
+        },
+    },
+}
