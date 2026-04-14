@@ -130,7 +130,7 @@ if os.environ.get('CLOUDINARY_CLOUD_NAME'):
 else:
     # Se não encontrar as chaves (ex: no seu PC), usa o local
     DEFAULT_FILE_STORAGE = 'django.core.files.storage.FileSystemStorage'
-    
+
 """
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
 
