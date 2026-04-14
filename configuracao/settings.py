@@ -119,21 +119,14 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
 
-"""
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
-    'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
-    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
+    'CLOUD_NAME': 'dqhdejpsr',
+    'API_KEY': '598351497964753',
+    'API_SECRET': '2Q33pKZG3ZkvFvRDj9zfoooZxfg',
+    'PREFIX': 'bazar_maria',
 }
-"""
 
 DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
-
-# Isso impede que o Django ignore erros de upload. 
-# Se a conexão falhar, o site VAI travar e te mostrar o porquê.
-CLOUDINARY_STORAGE = {
-    'PREFIX': 'bazar_maria', # Apenas para organizar
-}
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
