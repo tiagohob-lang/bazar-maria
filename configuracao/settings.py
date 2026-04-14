@@ -131,3 +131,9 @@ CLOUDINARY_STORAGE = {
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+# URL que o navegador vai usar para acessar as imagens
+MEDIA_URL = '/media/'
+
+# Local onde as imagens ficam temporariamente antes de ir para a nuvem
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

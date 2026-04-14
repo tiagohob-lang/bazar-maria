@@ -9,3 +9,7 @@ urlpatterns = [
     path('', vitrine, name='vitrine'), # Página inicial da loja
     path('produto/<int:pk>/', detalhe_produto, name='detalhe_produto'), # Detalhes do produto
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
+# Adicione isso logo abaixo da lista urlpatterns:
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
