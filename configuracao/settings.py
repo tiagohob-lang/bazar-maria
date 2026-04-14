@@ -118,8 +118,7 @@ USE_I18N = True
 USE_TZ = True
 
 
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/6.0/howto/static-files/
+# --- CONFIGURAÇÃO DE ARMAZENAMENTO (CLOUDINARY) ---
 
 CLOUDINARY_STORAGE = {
     'CLOUD_NAME': 'dqhdejpsr',
@@ -128,22 +127,21 @@ CLOUDINARY_STORAGE = {
     'PREFIX': 'bazar_maria',
 }
 
-DEFAULT_FILE_STORAGE = 'cloudinary_storage.storage.MediaCloudinaryStorage'
+STORAGES = {
+    "default": {
+        "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
+    },
+    "staticfiles": {
+        "BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
+    },
+}
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
-# URL que o navegador vai usar para acessar as imagens
 MEDIA_URL = '/media/'
 
-# Local onde as imagens ficam temporariamente antes de ir para a nuvem
-#MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+# --- LOGGING PARA DIAGNÓSTICO ---
 
-print(f"DEBUG: Cloudinary Name é {os.environ.get('CLOUDINARY_CLOUD_NAME')}")
-print(f"DEBUG: Storage atual é {DEFAULT_FILE_STORAGE}")
-
-# Isso vai imprimir qualquer erro do Cloudinary direto no log do Render
 LOGGING = {
     'version': 1,
     'disable_existing_loggers': False,
@@ -159,3 +157,6 @@ LOGGING = {
         },
     },
 }
+
+# Prints de segurança (ajustados para não dar erro)
+print("DEBUG: Configurações de Storage carregadas com sucesso.")
