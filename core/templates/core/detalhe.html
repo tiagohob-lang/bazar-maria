@@ -1,96 +1,53 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>{{ produto.titulo }} - Bazar Maria</title>
-    <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; background-color: #f9f9f9; color: #333; }
-        header { background: #ff4d94; color: white; padding: 1rem; text-align: center; }
-        .nav-voltar { padding: 20px; max-width: 1000px; margin: 0 auto; }
-        .nav-voltar a { text-decoration: none; color: #ff4d94; font-weight: bold; }
-        
-        .produto-container { 
-            display: flex; 
-            max-width: 1000px; 
-            margin: 0 auto; 
-            background: white; 
-            padding: 30px; 
-            border-radius: 15px; 
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            gap: 40px;
-        }
+{% extends "base.html" %}
 
-        .foto-produto { flex: 1; }
-        .foto-produto img { width: 100%; border-radius: 10px; object-fit: cover; }
-        
-        .info-produto { flex: 1; display: flex; flex-direction: column; }
-        .info-produto h1 { margin-top: 0; color: #222; }
-        .categoria-tag { background: #eee; padding: 5px 12px; border-radius: 20px; font-size: 0.9rem; margin-right: 5px; }
-        
-        .preco { font-size: 2rem; color: #ff4d94; font-weight: bold; margin: 20px 0; }
-        .descricao { line-height: 1.6; color: #666; margin-bottom: 30px; }
+{% block title %}{{ produto.titulo }} - Bazar Maria{% endblock %}
 
-        .btn-whatsapp {
-            background-color: #25d366;
-            color: white;
-            text-align: center;
-            padding: 15px;
-            border-radius: 8px;
-            text-decoration: none;
-            font-weight: bold;
-            font-size: 1.1rem;
-            transition: 0.3s;
-        }
-        .btn-whatsapp:hover { background-color: #1ebe57; }
-
-        @media (max-width: 768px) {
-            .produto-container { flex-direction: column; padding: 15px; }
-        }
-    </style>
-</head>
-<body>
-
-<header>
-    <h1>Bazar Maria</h1>
-</header>
-
-<div class="nav-voltar">
-    <a href="{% url 'vitrine' %}">← Voltar para a vitrine</a>
-</div>
-
-<main class="produto-container">
-    <div class="foto-produto">
-        {% if produto.imagem %}
-            <img src="{{ produto.imagem.url }}" alt="{{ produto.titulo }}">
-        {% else %}
-            <div style="background: #ddd; height: 400px; display: flex; align-items: center; justify-content: center;">Sem foto</div>
-        {% endif %}
-    </div>
-
-    <div class="info-produto">
-        <h1>{{ produto.titulo }}</h1>
-        <div>
-            <span class="categoria-tag">{{ produto.publico }}</span>
-            <span class="categoria-tag">{{ produto.tipo }}</span>
-        </div>
-        
-        <p class="preco">R$ {{ produto.preco }}</p>
-        
-        <div class="descricao">
-            <h3>Descrição da Peça</h3>
-            <p>{{ produto.descricao|linebreaks }}</p>
-        </div>
-
-        <a href="https://wa.me/5531999999999?text=Olá! Tenho interesse no item '{{ produto.titulo }}' (R$ {{ produto.preco }}) que vi no site. Ainda está disponível?" 
-           target="_blank" class="btn-whatsapp">
-            Tenho Interesse (WhatsApp)
+{% block content %}
+<div class="container my-4">
+    <div class="mb-4">
+        <a href="{% url 'vitrine' %}" class="text-decoration-none fw-bold" style="color: #ff4d94;">
+            <i class="bi bi-arrow-left"></i> ← Voltar para a vitrine
         </a>
-        <p style="font-size: 0.8rem; color: #999; margin-top: 10px; text-align: center;">
-            * Ao clicar, você falará direto comigo para combinar a entrega.
-        </p>
     </div>
-</main>
 
-</body>
-</html>
+    <div class="row g-4 bg-white p-3 p-md-5 rounded-4 shadow-sm">
+        <div class="col-12 col-md-6">
+            {% if produto.imagem %}
+                <img src="{{ produto.imagem.url }}" alt="{{ produto.titulo }}" class="img-fluid rounded-3 shadow-sm">
+            {% else %}
+                <div class="bg-light d-flex align-items-center justify-content-center rounded-3" style="height: 400px;">
+                    <span class="text-muted">Sem foto disponível</span>
+                </div>
+            {% endif %}
+        </div>
+
+        <div class="col-12 col-md-6 d-flex flex-column">
+            <h1 class="display-5 fw-bold text-dark">{{ produto.titulo }}</h1>
+            
+            <div class="mb-3">
+                <span class="badge rounded-pill bg-light text-dark border px-3 py-2">{{ produto.publico }}</span>
+                <span class="badge rounded-pill bg-light text-dark border px-3 py-2">{{ produto.tipo }}</span>
+            </div>
+            
+            <p class="h2 fw-bold mb-4" style="color: #ff4d94;">R$ {{ produto.preco }}</p>
+            
+            <div class="descricao mb-4">
+                <h4 class="h5 fw-bold border-bottom pb-2">Descrição da Peça</h4>
+                <div class="text-muted">
+                    {{ produto.descricao|linebreaks }}
+                </div>
+            </div>
+
+            <div class="mt-auto">
+                <a href="https://wa.me/5531988377052?text=Olá! Tenho interesse no item '{{ produto.titulo }}' (R$ {{ produto.preco }}) que vi no site. Ainda está disponível?" 
+                   target="_blank" class="btn btn-success btn-lg w-100 py-3 fw-bold shadow-sm">
+                    Tenho Interesse (WhatsApp)
+                </a>
+                <p class="text-center text-muted small mt-2">
+                    * Ao clicar, você falará direto comigo para combinar a entrega.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

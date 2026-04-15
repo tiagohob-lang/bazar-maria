@@ -1,63 +1,30 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Bazar Maria - Vitrine</title>
-    <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; margin: 0; display: flex; }
-        header { background: #ff4d94; color: white; padding: 1rem; width: 100%; position: fixed; text-align: center; }
-        aside { width: 250px; background: #f4f4f4; height: 100vh; padding: 100px 20px 20px; position: sticky; top: 0; }
-        main { flex-grow: 1; padding: 100px 20px 20px; }
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 20px; }
-        .card { border: 1px solid #eee; padding: 10px; border-radius: 10px; transition: 0.3s; }
-        .card:hover { shadow: 0 5px 15px rgba(0,0,0,0.1); transform: translateY(-5px); }
-        .card img { width: 100%; height: 250px; object-fit: cover; border-radius: 8px; }
-        .preco { font-weight: bold; color: #ff4d94; font-size: 1.2rem; }
-        .filtro-link { display: block; margin: 10px 0; color: #333; text-decoration: none; }
-        .filtro-link:hover { color: #ff4d94; }
-    </style>
-</head>
-<body>
-    <header><h1>Bazar Maria</h1></header>
+{% extends "base.html" %}
 
-    <aside>
-        <h3>Filtrar por:</h3>
-        <a href="/" class="filtro-link"><strong>Ver Tudo</strong></a>
-        <hr>
-        <p>Setor:</p>
-        {% for p in publicos %}
-            <a href="?publico={{ p.id }}" class="filtro-link">{{ p.nome }}</a>
-        {% endfor %}
-        <hr>
-        <p>Tipo:</p>
-        {% for t in tipos %}
-            <a href="?tipo={{ t.id }}" class="filtro-link">{{ t.nome }}</a>
-        {% endfor %}
-    </aside>
-
-    <main>
-        <div class="grid">
-            {% for produto in produtos %}
-                <div class="card">
-                    {% if produto.imagem %}
-                        <a href="{% url 'detalhe_produto' produto.id %}">
-                            <img src="{{ produto.imagem.url }}" alt="{{ produto.titulo }}">
-                        </a>
-                    {% endif %}
-                    <h4>{{ produto.titulo }}</h4>
-                    <p>{{ produto.publico }} | {{ produto.tipo }}</p>
+{% block content %}
+    <div class="grid">
+        {% for produto in produtos %}
+            <div class="card shadow-sm">
+                {% if produto.imagem %}
+                    <a href="{% url 'detalhe_produto' produto.id %}">
+                        <img src="{{ produto.imagem.url }}" alt="{{ produto.titulo }}">
+                    </a>
+                {% endif %}
+                <div class="p-2">
+                    <h5 class="mt-2" style="font-size: 1rem;">{{ produto.titulo }}</h5>
+                    <p class="text-muted small mb-1">{{ produto.publico }} | {{ produto.tipo }}</p>
                     <p class="preco">R$ {{ produto.preco }}</p>
+                    
                     <a href="https://wa.me/5531988377052?text=Olá! Vi o produto '{{ produto.titulo }}' no seu Bazar e gostaria de saber se ainda está disponível." 
                        target="_blank" 
-                       style="display: block; background-color: #25d366; color: white; text-align: center; padding: 10px; border-radius: 5px; text-decoration: none; margin-top: 10px; font-weight: bold;">
-                       Comprar
+                       class="btn btn-success w-100 fw-bold shadow-sm">
+                       <i class="bi bi-whatsapp"></i> Comprar
                     </a>
                 </div>
-            {% empty %}
-                <p>Nenhum item encontrado nesta categoria.</p>
-            {% endfor %}
-        </div>
-    </main>
-</body>
-</html>
+            </div>
+        {% empty %}
+            <div class="text-center w-100">
+                <p class="alert alert-warning">Nenhum item encontrado nesta categoria.</p>
+            </div>
+        {% endfor %}
+    </div>
+{% endblock %}
