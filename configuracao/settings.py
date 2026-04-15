@@ -136,6 +136,10 @@ STORAGES = {
     },
 }
 
+# COMPATIBILIDADE: Isso resolve o erro 'AttributeError: STATICFILES_STORAGE'
+DEFAULT_FILE_STORAGE = STORAGES["default"]["BACKEND"]
+STATICFILES_STORAGE = STORAGES["staticfiles"]["BACKEND"]
+
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 MEDIA_URL = '/media/'
