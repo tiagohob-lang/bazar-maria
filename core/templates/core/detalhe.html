@@ -31,7 +31,7 @@
                 <span class="badge rounded-pill bg-light text-dark border px-3 py-2">{{ produto.tipo.nome }}</span>
             </div>
             
-            <p class="h2 fw-bold mb-4" style="color: #ff4d94;">R$ {{ produto.preco|floatformat:2 }}</p>
+            <p class="h2 fw-bold mb-4" style="color: #ff4d94;">R$ {{ produto.preco|localize }}</p>
             
             <div class="descricao mb-4">
                 <h4 class="h5 fw-bold border-bottom pb-2">Descrição da Peça</h4>

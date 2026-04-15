@@ -17,6 +17,10 @@ import dj_database_url # Instale com: pip install dj-database-url
 
 import logging
 
+# Force o locale para português
+import locale
+locale.setlocale(locale.LC_ALL, 'pt_BR.UTF-8')
+
 # settings.py
 
 LANGUAGE_CODE = 'pt-br'  # Define o idioma como Português do Brasil
@@ -184,6 +188,10 @@ LOGGING = {
         },
     },
 }
+
+FORMAT_MODULE_PATH = [
+    'BazarMaria.formats',
+]
 
 # Prints de segurança (ajustados para não dar erro)
 print("DEBUG: Configurações de Storage carregadas com sucesso.")
