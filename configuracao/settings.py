@@ -17,9 +17,17 @@ import dj_database_url # Instale com: pip install dj-database-url
 
 import logging
 
+# settings.py
+
+LANGUAGE_CODE = 'pt-br'  # Define o idioma como Português do Brasil
+TIME_ZONE = 'America/Sao_Paulo' # Ajusta o fuso horário
+
+USE_I18N = True   # Ativa a tradução internacional
+USE_L10N = True   # Ativa a localização (formatos de números e datas)
+USE_TZ = True     # Ativa o fuso horário
+
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/6.0/howto/deployment/checklist/
