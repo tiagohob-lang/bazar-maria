@@ -6,8 +6,10 @@
             <div class="card shadow-sm">
                 {% if produto.imagem %}
                     <a href="{% url 'detalhe_produto' produto.id %}">
-                        <img src="{{ produto.imagem.url }}" alt="{{ produto.titulo }}">
+                        <img src="{{ produto.imagem.url }}" class="card-img-top" alt="{{ produto.titulo }}" style="height: 250px; object-fit: cover;">
                     </a>
+                 {% else %}
+                    <p>Sem foto</p>
                 {% endif %}
                 <div class="p-2">
                     <h5 class="mt-2" style="font-size: 1rem;">{{ produto.titulo }}</h5>
