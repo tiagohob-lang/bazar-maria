@@ -21,7 +21,8 @@ import logging
 
 LANGUAGE_CODE = 'pt-br'  # Define o idioma como Português do Brasil
 TIME_ZONE = 'America/Sao_Paulo' # Ajusta o fuso horário
-
+THOUSAND_SEPARATOR = '.'    # Separador de milhar
+USE_THOUSAND_SEPARATOR = True # Separador de milhar
 USE_I18N = True   # Ativa a tradução internacional
 USE_L10N = True   # Ativa a localização (formatos de números e datas)
 USE_TZ = True     # Ativa o fuso horário
