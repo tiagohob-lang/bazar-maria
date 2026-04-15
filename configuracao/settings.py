@@ -131,7 +131,6 @@ STORAGES = {
         "BACKEND": "cloudinary_storage.storage.MediaCloudinaryStorage",
     },
     "staticfiles": {
-        #"BACKEND": "whitenoise.storage.CompressedManifestStaticFilesStorage",
         "BACKEND": "whitenoise.storage.StaticFilesStorage",
     },
 }
@@ -142,6 +141,15 @@ STATICFILES_STORAGE = STORAGES["staticfiles"]["BACKEND"]
 
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+
+# Isso diz ao Django onde procurar seus arquivos CSS/JS personalizados
+STATICFILES_DIRS = [
+    os.path.join(BASE_DIR, 'static'),
+]
+
+# Isso ajuda o WhiteNoise a encontrar os arquivos mais facilmente em alguns servidores
+WHITENOISE_USE_FINDERS = True
+
 MEDIA_URL = '/media/'
 
 # --- LOGGING PARA DIAGNÓSTICO ---
