@@ -1,20 +1,59 @@
 {% extends "base.html" %}
 
 {% block content %}
+<div class="container mt-4">
+    
+    <div class="text-center mb-5">
+        <div class="mb-3">
+            <small class="text-uppercase fw-bold text-muted" style="font-size: 0.7rem; letter-spacing: 1px;">Filtrar por Público</small>
+            <div class="d-flex flex-wrap justify-content-center gap-2 mt-1">
+                <a href="?{% if request.GET.tipo %}tipo={{ request.GET.tipo }}{% endif %}" 
+                   class="btn btn-outline-primary btn-sm rounded-pill {% if not request.GET.publico %}active{% endif %}">
+                    Todos
+                </a>
+                {% for p in publicos %}
+                <a href="?publico={{ p.id }}{% if request.GET.tipo %}&tipo={{ request.GET.tipo }}{% endif %}" 
+                   class="btn btn-outline-primary btn-sm rounded-pill {% if request.GET.publico == p.id|stringformat:'s' %}active{% endif %}">
+                    {{ p.nome }}
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div>
+            <small class="text-uppercase fw-bold text-muted" style="font-size: 0.7rem; letter-spacing: 1px;">Tipo de Peça</small>
+            <div class="d-flex flex-wrap justify-content-center gap-2 mt-1">
+                <a href="?{% if request.GET.publico %}publico={{ request.GET.publico }}{% endif %}" 
+                   class="btn btn-outline-dark btn-sm rounded-pill {% if not request.GET.tipo %}active{% endif %}">
+                    Todas
+                </a>
+                {% for t in tipos_roupa %}
+                <a href="?tipo={{ t.id }}{% if request.GET.publico %}&publico={{ request.GET.publico }}{% endif %}" 
+                   class="btn btn-outline-dark btn-sm rounded-pill {% if request.GET.tipo == t.id|stringformat:'s' %}active{% endif %}">
+                    {{ t.nome }}
+                </a>
+                {% endfor %}
+            </div>
+        </div>
+    </div>
+
     <div class="grid">
         {% for produto in produtos %}
-            <div class="card shadow-sm">
+            <div class="card shadow-sm border-0">
                 {% if produto.imagem %}
                     <a href="{% url 'detalhe_produto' produto.id %}">
-                        <img src="{{ produto.imagem.url }}" class="card-img-top" alt="{{ produto.titulo }}" style="height: 250px; object-fit: cover;">
+                        <img src="{{ produto.imagem.url }}" class="card-img-top" alt="{{ produto.titulo }}" style="height: 320px; object-fit: cover;">
                     </a>
-                 {% else %}
-                    <p>Sem foto</p>
+                {% else %}
+                    <div class="d-flex align-items-center justify-content-center bg-light" style="height: 320px;">
+                        <p class="text-muted">Sem foto</p>
+                    </div>
                 {% endif %}
-                <div class="p-2">
-                    <h5 class="mt-2" style="font-size: 1rem;">{{ produto.titulo }}</h5>
-                    <p class="text-muted small mb-1">{{ produto.publico }} | {{ produto.tipo }}</p>
-                    <p class="preco">R$ {{ produto.preco }}</p>
+                
+                <div class="p-3">
+                    <h5 class="mb-1" style="font-size: 1.1rem; font-weight: 600;">{{ produto.titulo }}</h5>
+                    <p class="text-muted small mb-2">{{ produto.publico.nome }} | {{ produto.tipo.nome }}</p>
+                    <p class="preco fs-5 fw-bold text-dark">R$ {{ produto.preco }}</p>
                     
                     <a href="https://wa.me/5531988377052?text=Olá! Vi o produto '{{ produto.titulo }}' no seu Bazar e gostaria de saber se ainda está disponível." 
                        target="_blank" 
@@ -24,9 +63,11 @@
                 </div>
             </div>
         {% empty %}
-            <div class="text-center w-100">
-                <p class="alert alert-warning">Nenhum item encontrado nesta categoria.</p>
+            <div class="text-center w-100 py-5">
+                <p class="alert alert-light">Nenhum item encontrado com esses filtros.</p>
+                <a href="{% url 'vitrine' %}" class="btn btn-dark">Ver todos os produtos</a>
             </div>
         {% endfor %}
     </div>
+</div>
 {% endblock %}

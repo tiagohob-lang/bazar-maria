@@ -1,25 +1,29 @@
-from django.shortcuts import render
+from django.shortcuts import render, get_object_or_404
 from .models import Produto, Publico, TipoRoupa
-from django.shortcuts import get_object_or_404
 
 def vitrine(request):
-    produtos = Produto.objects.filter(estoque__gt=0)
-    
-    # Pegamos os filtros da URL (ex: ?publico=1)
-    publico_id = request.GET.get('publico')
+    # 'tipo' e 'publico' são os nomes que aparecem na URL: ?tipo=1&publico=2
     tipo_id = request.GET.get('tipo')
+    publico_id = request.GET.get('publico')
 
-    if publico_id:
-        produtos = produtos.filter(publico_id=publico_id)
+    produtos = Produto.objects.all()
+
+    # No filter, usamos o nome do campo no seu Model Produto (tipo e publico)
     if tipo_id:
         produtos = produtos.filter(tipo_id=tipo_id)
+    
+    if publico_id:
+        produtos = produtos.filter(publico_id=publico_id)
 
-    contexto = {
+    # Buscamos as listas completas para os botões
+    tipos_roupa = TipoRoupa.objects.all() 
+    publicos = Publico.objects.all()
+
+    return render(request, 'core/vitrine.html', {
         'produtos': produtos,
-        'publicos': Publico.objects.all(),
-        'tipos': TipoRoupa.objects.all(),
-    }
-    return render(request, 'core/vitrine.html', contexto)
+        'tipos_roupa': tipos_roupa, # Nome claro para o template
+        'publicos': publicos
+    })
 
 def detalhe_produto(request, pk):
     produto = get_object_or_404(Produto, pk=pk)

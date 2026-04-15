@@ -5,59 +5,45 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Bazar Maria{% endblock %}</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
-    <style>
-        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #fdfdfd; }
-        header { background: #ff4d94; color: white; padding: 1rem; text-align: center; width: 100%; position: fixed; top: 0; z-index: 1000; }
-        
-        /* Estilo para telas grandes (Desktop) */
-        @media (min-width: 992px) {
-            .wrapper { display: flex; }
-            aside { width: 280px; height: 100vh; position: sticky; top: 0; padding-top: 100px; background: #f8f9fa; border-right: 1px solid #eee; }
-            main { flex-grow: 1; padding: 100px 20px 20px; }
-        }
-
-        /* Estilo para telas pequenas (Mobile) */
-        @media (max-width: 991px) {
-            aside { padding: 80px 15px 10px; border-bottom: 2px solid #ff4d94; }
-            main { padding: 20px; }
-        }
-
-        .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); gap: 15px; }
-        .card { border: 1px solid #eee; padding: 10px; border-radius: 10px; background: white; transition: 0.3s; }
-        .card:hover { box-shadow: 0 5px 15px rgba(0,0,0,0.1); transform: translateY(-5px); }
-        .card img { width: 100%; height: 200px; object-fit: cover; border-radius: 8px; }
-        .card-img-top { display: block !important; width: 100% !important; min-height: 200px !important; background-color: #f0f0f0; }
-        .preco { font-weight: bold; color: #ff4d94; font-size: 1.1rem; margin: 5px 0; }
-        .filtro-link { display: inline-block; margin: 5px 10px 5px 0; color: #333; text-decoration: none; padding: 5px 10px; background: #eee; border-radius: 20px; font-size: 0.9rem; }
-        @media (min-width: 992px) { .filtro-link { display: block; background: transparent; border-radius: 0; } }
-    </style>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
+    <style>
+        body { font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #fdfdfd; padding-top: 80px; }
+        header { background: #ff4d94; color: white; padding: 1rem; text-align: center; width: 100%; position: fixed; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+        
+        /* Ajuste da Grade para ocupar tudo */
+        .grid { 
+            display: grid; 
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); 
+            gap: 20px; 
+            padding: 20px 0;
+        }
+
+        .card { border: none; border-radius: 12px; background: white; transition: 0.3s; overflow: hidden; }
+        .card:hover { box-shadow: 0 8px 25px rgba(0,0,0,0.1); transform: translateY(-5px); }
+        .card img { width: 100%; height: 280px; object-fit: cover; }
+        
+        .preco { font-weight: bold; color: #ff4d94; font-size: 1.2rem; }
+        
+        /* Estilo dos Botões de Filtro (Pílulas) */
+        .btn-outline-primary { border-color: #ff4d94; color: #ff4d94; }
+        .btn-outline-primary:hover, .btn-outline-primary.active { background-color: #ff4d94; border-color: #ff4d94; color: white; }
+        
+        .btn-outline-dark.active { background-color: #333; color: #fff; }
+
+        @media (max-width: 768px) {
+            .grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 10px; }
+            .card img { height: 200px; }
+        }
+    </style>
 </head>
 <body>
-    <header><h1>Bazar Maria</h1></header>
+    <header>
+        <h1 class="m-0">Bazar Maria</h1>
+    </header>
     
-    <div class="wrapper">
-        <aside>
-            <div class="container">
-                <h5>Filtrar por:</h5>
-                <a href="/" class="filtro-link"><strong>Ver Tudo</strong></a>
-                <hr class="d-none d-lg-block">
-                <p class="mb-1"><strong>Setor:</strong></p>
-                {% for p in publicos %}
-                    <a href="?publico={{ p.id }}" class="filtro-link">{{ p.nome }}</a>
-                {% endfor %}
-                <hr class="d-none d-lg-block">
-                <p class="mb-1"><strong>Tipo:</strong></p>
-                {% for t in tipos %}
-                    <a href="?tipo={{ t.id }}" class="filtro-link">{{ t.nome }}</a>
-                {% endfor %}
-            </div>
-        </aside>
-
-        <main>
-            {% block content %}{% endblock %}
-        </main>
-    </div>
+    <main class="container">
+        {% block content %}{% endblock %}
+    </main>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </body>
