@@ -28,8 +28,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-v5$6*s$_&p2^!l!%9k0k)cb-#&^1j)xxh=mc-y8z6mnj=o611!'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-#DEBUG = os.environ.get('DJANGO_DEBUG', 'False') == 'True'
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ['*']
 
@@ -121,9 +120,9 @@ USE_TZ = True
 # --- CONFIGURAÇÃO DE ARMAZENAMENTO (CLOUDINARY) ---
 
 CLOUDINARY_STORAGE = {
-    'CLOUD_NAME': 'dqhdejpsr',
-    'API_KEY': '598351497964753',
-    'API_SECRET': '2Q33pKZG3ZkvFvRDj9zfoooZxfg',
+    'CLOUD_NAME': os.environ.get('CLOUDINARY_CLOUD_NAME'),
+    'API_KEY': os.environ.get('CLOUDINARY_API_KEY'),
+    'API_SECRET': os.environ.get('CLOUDINARY_API_SECRET'),
     'PREFIX': 'bazar_maria',
 }
 
