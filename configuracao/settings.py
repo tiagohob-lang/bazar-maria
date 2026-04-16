@@ -189,3 +189,4 @@ FORMAT_MODULE_PATH = [
 
 # Prints de segurança (ajustados para não dar erro)
 print("DEBUG: Configurações de Storage carregadas com sucesso.")
+
