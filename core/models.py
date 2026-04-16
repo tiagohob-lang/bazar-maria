@@ -20,9 +20,19 @@ class TipoRoupa(models.Model):
     def __str__(self):
         return self.nome
 
+class Tamanho(models.Model):
+    nome = models.CharField(max_length=50, unique=True) # Ex: "P", "M", "42", "Único"
+
+    class Meta:
+        verbose_name_plural = "Tamanhos"
+
+    def __str__(self):
+        return self.nome
+    
 class Produto(models.Model):
     titulo = models.CharField(max_length=200)
     descricao = models.TextField()
+    tamanho = models.ForeignKey('Tamanho', on_delete=models.SET_NULL, null=True, blank=True)
     preco = models.DecimalField(max_digits=10, decimal_places=2)
     
     # Filtros robustos
