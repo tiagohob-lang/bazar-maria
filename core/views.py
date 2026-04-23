@@ -6,7 +6,14 @@ def vitrine(request):
     tipo_id = request.GET.get('tipo')
     publico_id = request.GET.get('publico')
 
-    produtos = Produto.objects.all()
+    #produtos = Produto.objects.all()                               #Mostra todos os itens
+    #produtos = Produto.objects.filter(vendido=False)               #Não mostra os itens vendidos
+    produtos = Produto.objects.all().order_by('vendido', '-id')     #Mostra os itens vendidos no final, os primeiros são os últimos cadastrados
+
+    # Captura o termo de busca
+    busca = request.GET.get('busca')
+    if busca:
+        produtos = produtos.filter(titulo__icontains=busca) # Busca no título
 
     # No filter, usamos o nome do campo no seu Model Produto (tipo e publico)
     if tipo_id:
@@ -25,6 +32,17 @@ def vitrine(request):
         'publicos': publicos
     })
 
-def detalhe_produto(request, pk):
+def detalhe_produto(request, pk):  # Voltamos para 'pk' para bater com seu urls.py
     produto = get_object_or_404(Produto, pk=pk)
-    return render(request, 'core/detalhe.html', {'produto': produto})
+    
+    # Busca os relacionados usando o 'produto' que acabamos de carregar
+    relacionados = Produto.objects.filter(
+        publico=produto.publico, 
+        vendido=False
+    ).exclude(pk=pk).order_by('?')[:4]
+    
+    # IMPORTANTE: Verifique se o caminho é 'core/detalhe.html'
+    return render(request, 'core/detalhe.html', {
+        'produto': produto,
+        'relacionados': relacionados
+    })

@@ -1,38 +1,84 @@
 {% extends "base.html" %}
-
 {% load meus_filtros %}
 {% load l10n %}
 
 {% block title %}{{ produto.titulo }} - Bazar Maria{% endblock %}
 
 {% block content %}
-<div class="container my-4 pt-5">
+<div class="container mt-3 pt-1">
     <div class="mb-4">
-        <a href="{% url 'vitrine' %}" class="text-decoration-none fw-bold" style="color: #ff4d94;">
+        <a href="{% url 'vitrine' %}" class="text-decoration-none fw-bold" style="color: #617c5f;">
             <i class="bi bi-arrow-left"></i> Voltar para a vitrine
         </a>
     </div>
 
     <div class="row g-4 bg-white p-3 p-md-5 rounded-4 shadow-sm border">
-        <div class="col-12 col-md-6 text-center">
-            {% if produto.imagem %}
-                <img src="{{ produto.imagem.url }}" alt="{{ produto.titulo }}" class="img-fluid rounded-3 shadow-sm" style="max-height: 500px; object-fit: contain;">
-            {% else %}
-                <div class="bg-light d-flex align-items-center justify-content-center rounded-3" style="height: 400px;">
-                    <span class="text-muted">Sem foto disponível</span>
+
+        <div class="col-12 col-md-6"> 
+            <div id="carouselProduto" class="carousel slide" data-bs-ride="false"> <div class="carousel-inner rounded-4 border">
+                    {% if produto.imagem %}
+                    <div class="carousel-item active">
+                        <a data-fslightbox="gallery" href="{{ produto.imagem.url }}">
+                            <img src="{{ produto.imagem.url }}" class="d-block w-100" alt="{{ produto.titulo }}">
+                        </a>
+                    </div>
+                    {% endif %}
+
+                    {% for foto in produto.imagens.all %}
+                    <div class="carousel-item">
+                        <a data-fslightbox="gallery" href="{{ foto.imagem.url }}">
+                            <img src="{{ foto.imagem.url }}" loading="lazy" class="d-block w-100" alt="Detalhe de {{ produto.titulo }}">
+                        </a>
+                    </div>
+                    {% endfor %}
                 </div>
-            {% endif %}
+
+                <button class="carousel-control-prev" type="button" data-bs-target="#carouselProduto" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Anterior</span>
+                </button>
+                <button class="carousel-control-next" type="button" data-bs-target="#carouselProduto" data-bs-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="visually-hidden">Próximo</span>
+                </button>
+            </div>
+
+            <div class="d-flex gap-2 mt-3 overflow-auto pb-2 justify-content-center">
+                {% if produto.imagem %}
+                <div class="miniatura-item active" data-bs-target="#carouselProduto" data-bs-slide-to="0">
+                    <img src="{{ produto.imagem.url }}" class="img-fluid rounded border" style="width: 70px; height: 70px; object-fit: cover; cursor: pointer;">
+                </div>
+                {% endif %}
+
+                {% for foto in produto.imagens.all %}
+                <div class="miniatura-item" data-bs-target="#carouselProduto" data-bs-slide-to="{{ forloop.counter }}">
+                    <img src="{{ foto.imagem.url }}" loading="lazy" class="img-fluid rounded border" style="width: 70px; height: 70px; object-fit: cover; cursor: pointer;">
+                </div>
+                {% endfor %}
+            </div>
         </div>
 
-        <div class="col-12 col-md-6 d-flex flex-column">
+        <div class="col-12 col-md-6 d-flex flex-column ps-md-5">
+
+            {% if produto.em_destaque %}
+                <span class="badge rounded-pill bg-warning text-dark mb-2 w-auto d-inline-block" style="max-width: fit-content;">
+                    <i class="bi bi-star-fill"></i> Peça em Destaque
+                </span>
+            {% endif %}
+
+            <small class="text-muted">Ref: {{ produto.gerar_sku }}</small>
             <h1 class="display-6 fw-bold text-dark">{{ produto.titulo }}</h1>
             
             <div class="mb-3">
-                <span class="badge rounded-pill bg-light text-dark border px-3 py-2">{{ produto.publico.nome }}</span>
-                <span class="badge rounded-pill bg-light text-dark border px-3 py-2">{{ produto.tipo.nome }}</span>
+                <span class="badge rounded-pill px-3 py-2" style="background-color: #e9ede9; color: #617c5f; border: 1px solid #617c5f;">
+                    {{ produto.publico.nome }}
+                </span>
+                <span class="badge rounded-pill px-3 py-2" style="background-color: #e9ede9; color: #617c5f; border: 1px solid #617c5f;">
+                    {{ produto.tipo.nome }}
+                </span>
             </div>
             
-            <p class="h2 fw-bold mb-4" style="color: #ff4d94;">R$ {{ produto.preco|real_brasileiro }}</p>
+            <p class="h2 fw-bold mb-4" style="color: #617c5f;">R$ {{ produto.preco|real_brasileiro }}</p>
             
             <div class="descricao mb-4">
                 <h4 class="h5 fw-bold border-bottom pb-2">Descrição da Peça</h4>
@@ -41,22 +87,130 @@
                 </div>
             </div>
 
-            <div class="tamanho-box">
-                <strong>Tamanho:</strong> 
-                {# Usamos o nome do campo da tabela Tamanho e o filtro default caso esteja vazio #}
-                <span class="badge-tamanho">{{ produto.tamanho.nome|default:"Único" }}</span>
+            <p class="mb-1">
+                <strong>Estado:</strong> 
+                {% if produto.condicao == 'N' %}
+                    <span class="badge bg-success">Novo (com etiqueta)</span>
+                {% else %}
+                    <span class="badge bg-secondary">Usado</span>
+                {% endif %}
+            </p>
+
+            <div class="condicao-container">
+                <label class="fw-bold mb-2">Condição da Peça:</label>
+                <div class="barra-progresso-bg">
+                    <div class="marcador" style="left: 
+                        {% if produto.estado == 1 %}10%
+                        {% elif produto.estado == 2 %}40%
+                        {% elif produto.estado == 3 %}70%
+                        {% elif produto.estado == 4 %}95%
+                        {% endif %};">
+                    </div>
+                </div>
+                <div class="labels-condicao">
+                    <span>Regular</span>
+                    <span>Boa</span>
+                    <span>Ótima</span>
+                    <span>Excelente</span>
+                </div>
             </div>
 
-            <div class="mt-auto">
-                <a href="https://wa.me/5531988377052?text=Olá! Tenho interesse no item '{{ produto.titulo }}' (R$ {{ produto.preco }}) que vi no site. Ainda está disponível?" 
-                   target="_blank" class="btn btn-success btn-lg w-100 py-3 fw-bold shadow-sm">
-                   <i class="bi bi-whatsapp"></i> Tenho Interesse (WhatsApp)
-                </a>
-                <p class="text-center text-muted small mt-2">
-                    * Ao clicar, você falará direto comigo para combinar a entrega.
-                </p>
+            <div class="mt-3 d-flex align-items-center flex-wrap">
+                <div>
+                    <strong>Tamanho:</strong> 
+                    <span class="badge-tamanho">{{ produto.tamanho.nome|default:"Único" }}</span>
+                </div>
+
+                <div class="ms-4">
+                    <strong>Cor:</strong> 
+                    <span class="badge-tamanho" style="background-color: #f8f9fa; border: 1px solid #ddd; color: #555;">
+                        {{ produto.cor|default:"Não informada" }}
+                    </span>
+                </div>
+            </div>
+
+            <div class="mt-4">
+                <p class="mb-1"><strong><i class="bi bi-info-circle"></i> Material:</strong> {{ produto.material }}</p>
+                
+                {% if produto.medidas %}
+                <div class="mt-3 p-3 bg-light border rounded">
+                    <h6 class="fw-bold mb-2"><i class="bi bi-rulers"></i> Medidas da Peça:</h6>
+                    <p class="mb-0 text-muted" style="white-space: pre-line;">{{ produto.medidas }}</p>
+                </div>
+                {% endif %}
+            </div>
+
+            <div class="mt-auto pt-4">
+                {% if not produto.vendido %}
+                    <a href="https://wa.me/5531988377052?text=Olá! Tenho interesse na peça: {{ produto.titulo }} (Ref: {{ produto.gerar_sku }}). Vi no site por R$ {{ produto.preco|real_brasileiro }}. Ainda está disponível?" 
+                       target="_blank" class="btn btn-success btn-lg w-100 py-3 fw-bold shadow-sm" style="background-color: #25d366; border: none;">
+                        <i class="bi bi-whatsapp"></i> Tenho Interesse (WhatsApp)
+                    </a>                    
+                    <p class="text-center text-muted small mt-2">
+                        * Ao clicar, você falará direto comigo para combinar a entrega.
+                    </p>
+                {% else %}
+                    <div class="alert alert-secondary text-center py-3 mb-2 shadow-sm border-0" style="border-radius: 12px;">
+                        <h5 class="fw-bold mb-1 text-dark">
+                            <i class="bi bi-hand-thumbs-up"></i> 
+                            {# Lógica de Gênero para o Público #}
+                            ESSA PEÇA JÁ TEM 
+                            {% if produto.publico.nome == "Feminino" %}DONA!{% else %}DONO!{% endif %}
+                        </h5>
+                        <p class="small mb-0">Fique de olho na vitrine para aproveitar as próximas novidades.</p>
+                    </div>
+                    <button class="btn btn-secondary btn-lg w-100 py-3 fw-bold" disabled>
+                        Indisponível
+                    </button>
+                {% endif %}
             </div>
         </div>
     </div>
 </div>
+<hr class="my-5" style="border-top: 1px solid #eee;">
+
+<div class="container mb-5">
+    <h3 class="fw-bold mb-4" style="color: #617c5f; font-size: 1.5rem;">Você também pode gostar</h3>
+    
+    <div class="row row-cols-2 row-cols-md-4 g-3">
+        {% for rel in relacionados %}
+        <div class="col">
+            <div class="card h-100 border-0 shadow-sm overflow-hidden" style="border-radius: 12px;">
+                <a href="{% url 'detalhe_produto' rel.id %}">
+                    {% if rel.imagem %}
+                        <img src="{{ rel.imagem.url }}" loading="lazy" class="card-img-top" 
+                             style="height: 200px; object-fit: cover;" alt="{{ rel.titulo }}">
+                    {% endif %}
+                </a>
+                <div class="p-2 text-center">
+                    <h6 class="small fw-bold mb-1 text-truncate" style="color: #333;">{{ rel.titulo }}</h6>
+                    <p class="fw-bold mb-0" style="color: #617c5f; font-size: 0.9rem;">
+                        R$ {{ rel.preco|real_brasileiro }}
+                    </p>
+                    <small class="text-muted" style="font-size: 0.7rem;">{{ rel.tamanho.nome|default:"Único" }}</small>
+                </div>
+            </div>
+        </div>
+        {% empty %}
+            <div class="col-12 text-center">
+                <p class="text-muted italic">Continue explorando nossa vitrine para encontrar mais peças incríveis!</p>
+            </div>
+        {% endfor %}
+    </div>
+</div>
+
+<script>
+    var myCarousel = document.getElementById('carouselProduto')
+    var miniaturas = document.querySelectorAll('.miniatura-item')
+
+    myCarousel.addEventListener('slide.bs.carousel', function (e) {
+        miniaturas.forEach(function(min) {
+            min.classList.remove('active');
+        });
+        miniaturas[e.to].classList.add('active');
+    })
+</script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/fslightbox/3.4.1/index.min.js"></script>
+
 {% endblock %}

@@ -3,14 +3,6 @@ from django.urls import path
 from django.conf import settings
 from django.conf.urls.static import static
 from core.views import vitrine, detalhe_produto
-from django.contrib.auth.models import User
-
-# Tenta criar o admin se ele não existir
-try:
-    if not User.objects.filter(username='admin').exists():
-        User.objects.create_superuser('admin', 'tiagohob@gmail.com', 'Galo@2013')
-except:
-    pass
 
 urlpatterns = [
     path('admin/', admin.site.urls),

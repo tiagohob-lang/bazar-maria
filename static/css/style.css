@@ -1,0 +1,295 @@
+/* ==========================================
+   1. CONFIGURAÇÕES GERAIS E HEADER
+   ========================================== */
+body { 
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+    background-color: #fdfdfd; 
+    padding-top: 75px; /* Ajustado para a nova altura da navbar */
+}
+
+header { 
+    width: 100%; 
+    position: fixed; 
+    top: 0; 
+    z-index: 1000; 
+    box-shadow: 0 2px 10px rgba(0,0,0,0.1); 
+}
+
+/* Container da Navbar */
+.navbar-custom {
+    position: relative;
+    min-height: 80px; /* Mais fino no Desktop */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: white;
+    padding: 10px 20px;
+    border-top: 5px solid #617c5f;
+    border-bottom: 5px solid #617c5f;
+}
+
+/* Posiciona a logo no canto esquerdo (Desktop) */
+.logo-esquerda {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.logo-esquerda img {
+    height: 70px; /* Altura equilibrada para desktop */
+    width: auto;
+}
+
+/* Estilo do título centralizado */
+.titulo-central {
+    color: #617c5f;
+    font-size: 2.5rem; /* Tamanho que você aprovou */
+    font-weight: bold;
+    margin: 0;
+    text-align: center;
+    line-height: 1.2;
+}
+
+/* ==========================================
+   2. VITRINE E PRODUTOS (Mantido seu código)
+   ========================================== */
+.grid { 
+    display: grid; 
+    grid-template-columns: repeat(auto-fill, minmax(230px, 1fr)); 
+    gap: 25px; 
+    padding: 20px 0 50px 0;
+}
+
+.card { 
+    border: none; 
+    border-radius: 12px; 
+    background: white; 
+    transition: transform 0.3s ease, box-shadow 0.3s ease; 
+    overflow: hidden; 
+}
+
+.card img, .carousel-item img { 
+    width: 100%; 
+    height: 320px; 
+    object-fit: cover; 
+    background-color: #f0f0f0; /* Um cinza bem clarinho */
+    transition: opacity 0.3s inset;
+}
+
+.preco { 
+    font-weight: bold; 
+    color: #ff4d94; 
+    font-size: 1.3rem; 
+}
+
+/* ... Restante do seu código de Carrossel, Condição e Botões ... */
+/* (Mantenha o código original aqui para poupar espaço na resposta) */
+
+.btn-outline-primary,
+.btn-outline-secondary {
+    color: #617c5f;
+    border-color: #617c5f;
+}
+
+.btn-outline-primary:hover, 
+.btn-outline-primary.active,
+.btn-outline-secondary:hover,
+.btn-outline-secondary.active,
+.btn-primary,
+.btn-secondary { 
+    background-color: #617c5f !important; 
+    border-color: #617c5f !important; 
+    color: white !important; 
+}
+
+/* ==========================================
+   FILTROS COM SCROLL E CENTRALIZAÇÃO
+   ========================================== */
+
+/* Container pai - Controla a centralização no Desktop */
+.filtros-wrapper {
+    position: relative;
+    width: 100%;
+    display: flex; 
+    justify-content: center; /* Centraliza no PC */
+}
+
+/* O efeito de transparência (Sombra) */
+.filtros-wrapper::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 50px;
+    height: 100%;
+    background: linear-gradient(to right, rgba(253,253,253,0), rgba(253,253,253,1));
+    pointer-events: none;
+    z-index: 5;
+}
+
+/* Container que faz o scroll */
+.filtros-scroll {
+    display: inline-flex; /* IMPORTANTE: Faz a largura se ajustar aos botões */
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    gap: 8px;
+    padding: 10px 20px;
+    scrollbar-width: none;
+    width: auto; /* MUDANÇA AQUI: De 100% para auto para permitir centralizar no PC */
+}
+
+.filtros-scroll::-webkit-scrollbar {
+    display: none;
+}
+
+.filtros-scroll .btn {
+    flex: 0 0 auto;
+    white-space: nowrap;
+}
+
+/* Padronização das imagens no detalhe do produto */
+#carouselProduto .carousel-item img {
+    height: 500px;
+    object-fit: contain; /* Mantém a proporção da roupa sem cortar */
+    background-color: #f8f9fa; /* Fundo neutro caso a foto seja estreita */
+    border-radius: 12px;
+}
+
+/* Deixar as setas do carrossel mais visíveis sobre fotos claras */
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+    background-color: rgba(97, 124, 95, 0.5); /* Nosso verde oliva com transparência */
+    border-radius: 50%;
+    padding: 20px;
+}
+
+/* Estilo das miniaturas */
+.miniatura-item {
+    opacity: 0.6;
+    transition: opacity 0.3s ease, border-color 0.3s ease;
+}
+
+.miniatura-item:hover, .miniatura-item.active {
+    opacity: 1;
+}
+
+.miniatura-item.active img {
+    border: 2px solid #617c5f !important; /* Destaque com o nosso verde oliva */
+}
+
+/* Estilo do Rodapé */
+.footer-custom {
+    background-color: white;
+    border-top: 5px solid #617c5f; /* Mesma borda do cabeçalho */
+    border-bottom: 2px solid #617c5f;
+}
+
+.footer-custom a:hover {
+    color: #617c5f !important;
+    text-decoration: underline !important;
+}
+
+/* Garante que o rodapé não "flutue" em telas com pouco conteúdo */
+body {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+footer {
+    margin-top: auto; /* Empurra o rodapé para o final da página */
+}
+
+/* Efeito de Gradiente no ícone do Instagram */
+.instagram-icon {
+    font-size: 1.5rem; /* Tamanho do ícone */
+    display: inline-block;
+    background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    transition: transform 0.3s ease;
+}
+
+.instagram-icon:hover {
+    transform: scale(1.1); /* Dá um leve pulinho ao passar o mouse */
+}
+
+/* Ajuste para o link do Instagram não ficar com cor de link comum */
+.instagram-wrapper a {
+    color: inherit;
+    transition: opacity 0.3s;
+}
+
+.instagram-wrapper a:hover {
+    opacity: 0.8;
+}
+
+
+/* ==========================================
+   5. RESPONSIVIDADE (O PONTO CHAVE)
+   ========================================== */
+
+/* COMPUTADOR (Desktop) */
+@media (min-width: 992px) {
+    .carousel { max-width: 450px; }
+    .carousel-item img { height: 500px !important; object-fit: contain; }
+    .filtros-wrapper::after { 
+        display: none; /* Remove a sombra no PC */
+    }
+    .filtros-scroll {
+        justify-content: center;
+        overflow-x: hidden; /* Remove o scroll se couber tudo */
+        padding: 10px 0;
+        width: auto; /* Garante que não ocupe a tela toda */
+    }
+}
+
+/* CELULAR (Mobile) */
+@media (max-width: 768px) {
+    body { 
+        padding-top: 115px; /* Aumentado pois a navbar mobile fica mais alta por ser vertical */
+    }
+
+    .navbar-custom {
+        flex-direction: column; /* Logo em cima, Título embaixo no celular */
+        min-height: auto;
+        padding: 15px 10px;
+    }
+
+    .logo-esquerda {
+        position: static; /* Remove o absoluto para não atropelar o texto */
+        transform: none;
+        margin-bottom: 8px; /* Espaço entre a logo e o texto */
+    }
+
+    .logo-esquerda img {
+        height: 55px; /* Logo menor e delicada no mobile */
+    }
+
+    .titulo-central {
+        font-size: 1.4rem; /* Texto ajustado para telas pequenas */
+    }
+
+    .grid { 
+        grid-template-columns: repeat(auto-fill, minmax(160px, 1fr)); 
+        gap: 15px; 
+    }
+
+    .card img { height: 240px; }
+
+    .filtros-wrapper {
+        justify-content: flex-start; /* Alinha à esquerda para o scroll funcionar */
+    }
+    
+    .filtros-scroll {
+        width: 100%; /* No celular precisa ser 100% para o scroll deslizar na tela toda */
+        padding-right: 60px; /* Espaço para a sombra não cobrir o último item */
+    }
+
+    #carouselProduto .carousel-item img {
+        height: 350px;
+    }
+
+}

@@ -1,21 +1,40 @@
 {% extends "base.html" %}
-
 {% load meus_filtros %}
 {% load l10n %}
 
 {% block content %}
-<div class="container mt-4">
+<div class="container mt-4 pt-1">
     
+    <div class="row justify-content-center mb-4">
+        <div class="col-md-6">
+            <form action="{% url 'vitrine' %}" method="GET" class="d-flex">
+                {% if request.GET.publico %}
+                    <input type="hidden" name="publico" value="{{ request.GET.publico }}">
+                {% endif %}
+                {% if request.GET.tipo %}
+                    <input type="hidden" name="tipo" value="{{ request.GET.tipo }}">
+                {% endif %}
+                
+                <input type="text" name="busca" class="form-control rounded-pill shadow-sm me-2" 
+                       placeholder="O que você está procurando?" value="{{ request.GET.busca|default:'' }}">
+                <button type="submit" class="btn btn-primary rounded-circle shadow-sm" style="background-color: #ff4d94; border: none;">
+                    <i class="bi bi-search"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+
+<!--
     <div class="text-center mb-5">
         <div class="mb-3">
-            <small class="text-uppercase fw-bold text-muted" style="font-size: 0.7rem; letter-spacing: 1px;">Filtrar por Público</small>
+            <small class="text-uppercase fw-bold text-muted" style="font-size: 0.7rem; letter-spacing: 1px;">Gênero</small>
             <div class="d-flex flex-wrap justify-content-center gap-2 mt-1">
-                <a href="?{% if request.GET.tipo %}tipo={{ request.GET.tipo }}{% endif %}" 
+                <a href="?{% if request.GET.tipo %}tipo={{ request.GET.tipo }}{% endif %}{% if request.GET.busca %}&busca={{ request.GET.busca }}{% endif %}" 
                    class="btn btn-outline-primary btn-sm rounded-pill {% if not request.GET.publico %}active{% endif %}">
                     Todos
                 </a>
                 {% for p in publicos %}
-                <a href="?publico={{ p.id }}{% if request.GET.tipo %}&tipo={{ request.GET.tipo }}{% endif %}" 
+                <a href="?publico={{ p.id }}{% if request.GET.tipo %}&tipo={{ request.GET.tipo }}{% endif %}{% if request.GET.busca %}&busca={{ request.GET.busca }}{% endif %}" 
                    class="btn btn-outline-primary btn-sm rounded-pill {% if request.GET.publico == p.id|stringformat:'s' %}active{% endif %}">
                     {{ p.nome }}
                 </a>
@@ -24,18 +43,57 @@
         </div>
 
         <div>
-            <small class="text-uppercase fw-bold text-muted" style="font-size: 0.7rem; letter-spacing: 1px;">Tipo de Peça</small>
+            <small class="text-uppercase fw-bold text-muted" style="font-size: 0.7rem; letter-spacing: 1px;">Categoria</small>
             <div class="d-flex flex-wrap justify-content-center gap-2 mt-1">
-                <a href="?{% if request.GET.publico %}publico={{ request.GET.publico }}{% endif %}" 
-                   class="btn btn-outline-dark btn-sm rounded-pill {% if not request.GET.tipo %}active{% endif %}">
+                <a href="?{% if request.GET.publico %}publico={{ request.GET.publico }}{% endif %}{% if request.GET.busca %}&busca={{ request.GET.busca }}{% endif %}" 
+                   class="btn btn-outline-primary btn-sm rounded-pill {% if not request.GET.tipo %}active{% endif %}">
                     Todas
                 </a>
                 {% for t in tipos_roupa %}
-                <a href="?tipo={{ t.id }}{% if request.GET.publico %}&publico={{ request.GET.publico }}{% endif %}" 
-                   class="btn btn-outline-dark btn-sm rounded-pill {% if request.GET.tipo == t.id|stringformat:'s' %}active{% endif %}">
+                <a href="?tipo={{ t.id }}{% if request.GET.publico %}&publico={{ request.GET.publico }}{% endif %}{% if request.GET.busca %}&busca={{ request.GET.busca }}{% endif %}" 
+                   class="btn btn-outline-primary btn-sm rounded-pill {% if request.GET.tipo == t.id|stringformat:'s' %}active{% endif %}">
                     {{ t.nome }}
                 </a>
                 {% endfor %}
+            </div>
+        </div>
+    </div>
+-->    
+    
+    <div class="text-center mb-5">
+        <div class="mb-4">
+            <small class="text-uppercase fw-bold" style="font-size: 0.75rem; letter-spacing: 1px; color: #617c5f;">Gênero</small>
+            <div class="filtros-wrapper">
+                <div class="filtros-scroll mt-1">
+                    <a href="?{% if request.GET.tipo %}tipo={{ request.GET.tipo }}{% endif %}{% if request.GET.busca %}&busca={{ request.GET.busca }}{% endif %}" 
+                    class="btn btn-outline-primary btn-sm rounded-pill {% if not request.GET.publico %}active{% endif %}">
+                        Todos
+                    </a>
+                    {% for p in publicos %}
+                    <a href="?publico={{ p.id }}{% if request.GET.tipo %}&tipo={{ request.GET.tipo }}{% endif %}{% if request.GET.busca %}&busca={{ request.GET.busca }}{% endif %}" 
+                    class="btn btn-outline-primary btn-sm rounded-pill {% if request.GET.publico == p.id|stringformat:'s' %}active{% endif %}">
+                        {{ p.nome }}
+                    </a>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <div>
+            <small class="text-uppercase fw-bold" style="font-size: 0.75rem; letter-spacing: 1px; color: #617c5f;">Categoria</small>
+            <div class="filtros-wrapper">
+                <div class="filtros-scroll mt-1">
+                    <a href="?{% if request.GET.publico %}publico={{ request.GET.publico }}{% endif %}{% if request.GET.busca %}&busca={{ request.GET.busca }}{% endif %}" 
+                    class="btn btn-outline-primary btn-sm rounded-pill {% if not request.GET.tipo %}active{% endif %}">
+                        Todas
+                    </a>
+                    {% for t in tipos_roupa %}
+                    <a href="?tipo={{ t.id }}{% if request.GET.publico %}&publico={{ request.GET.publico }}{% endif %}{% if request.GET.busca %}&busca={{ request.GET.busca }}{% endif %}" 
+                    class="btn btn-outline-primary btn-sm rounded-pill {% if request.GET.tipo == t.id|stringformat:'s' %}active{% endif %}">
+                        {{ t.nome }}
+                    </a>
+                    {% endfor %}
+                </div>
             </div>
         </div>
     </div>
@@ -43,31 +101,63 @@
     <div class="grid">
         {% for produto in produtos %}
             <div class="card shadow-sm border-0">
-                {% if produto.imagem %}
-                    <a href="{% url 'detalhe_produto' produto.id %}">
-                        <img src="{{ produto.imagem.url }}" class="card-img-top" alt="{{ produto.titulo }}" style="height: 320px; object-fit: cover;">
-                    </a>
-                {% else %}
-                    <div class="d-flex align-items-center justify-content-center bg-light" style="height: 320px;">
-                        <p class="text-muted">Sem foto</p>
-                    </div>
-                {% endif %}
                 
-                <div class="p-3">
-                    <h5 class="mb-1" style="font-size: 1.1rem; font-weight: 600;">{{ produto.titulo }}</h5>
-                    <p class="text-muted small mb-2">{{ produto.publico.nome }} | {{ produto.tipo.nome }}</p>
-                    <p class="preco fs-5 fw-bold text-dark">R$ {{ produto.preco|real_brasileiro }}</p>
+                <div class="position-relative">
+                    <div class="position-absolute d-flex flex-column align-items-start" style="top: 0; left: 0; z-index: 10; pointer-events: none;">
+                        
+                        {% if produto.vendido %}
+                            <div class="bg-danger text-white fw-bold px-3 py-1 shadow-sm" style="border-bottom-right-radius: 12px; font-size: 0.75rem;">
+                                VENDIDO
+                            </div>
+                        {% else %}
+                            
+                            {% if produto.criado_em|eh_novo %}
+                                <div class="bg-success text-white fw-bold px-3 py-1 shadow-sm mb-1" style="border-bottom-right-radius: 12px; font-size: 0.75rem;">
+                                    NOVIDADE
+                                </div>
+                            {% endif %}
 
-                    <a href="https://wa.me/5531988377052?text=Olá! Vi o produto '{{ produto.titulo }}' no seu Bazar e gostaria de saber se ainda está disponível." 
-                       target="_blank" 
-                       class="btn btn-success w-100 fw-bold shadow-sm">
-                       <i class="bi bi-whatsapp"></i> Comprar
+                            {% if produto.em_destaque %}
+                                <div class="bg-warning text-dark fw-bold px-3 py-1 shadow-sm" style="border-bottom-right-radius: 12px; font-size: 0.75rem;">
+                                    DESTAQUE
+                                </div>
+                            {% endif %}
+                            
+                        {% endif %}
+                    </div>
+
+                    {% if produto.imagem %}
+                        <a href="{% url 'detalhe_produto' produto.id %}" style="display: block;">
+                            <img src="{{ produto.imagem.url }}" loading="lazy" class="card-img-top {% if produto.vendido %}grayscale{% endif %}" 
+                                alt="{{ produto.titulo }}" style="height: 320px; object-fit: cover;">
+                        </a>
+                    {% endif %}
+                </div>
+
+                <div class="p-3 d-flex flex-column" style="min-height: 180px;">
+                    <a href="{% url 'detalhe_produto' produto.id %}" class="text-decoration-none text-dark">
+                        <h5 class="mb-1" style="font-size: 1.1rem; font-weight: 600;">{{ produto.titulo }}</h5>
                     </a>
+                    
+                    <p class="text-muted small mb-2">{{ produto.publico.nome }} | {{ produto.tipo.nome }}</p>
+                    <p class="preco fs-5 fw-bold text-dark mb-auto">R$ {{ produto.preco|real_brasileiro }}</p>
+
+                    {% if not produto.vendido %}
+                        <a href="https://wa.me/5531988377052?text=Olá! Vi o produto '{{ produto.titulo }}' (Ref: {{ produto.gerar_sku }}) no Bazar Maria e gostaria de saber se está disponível." 
+                           target="_blank" 
+                           class="btn btn-success w-100 fw-bold shadow-sm mt-3">
+                           <i class="bi bi-whatsapp"></i> Comprar
+                        </a>
+                    {% else %}
+                        <button class="btn btn-secondary w-100 fw-bold mt-3" disabled>
+                            Indisponível
+                        </button>
+                    {% endif %}
                 </div>
             </div>
         {% empty %}
             <div class="text-center w-100 py-5">
-                <p class="alert alert-light">Nenhum item encontrado com esses filtros.</p>
+                <p class="alert alert-light">Nenhum item encontrado.</p>
                 <a href="{% url 'vitrine' %}" class="btn btn-dark">Ver todos os produtos</a>
             </div>
         {% endfor %}

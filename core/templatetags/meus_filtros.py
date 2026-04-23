@@ -1,5 +1,6 @@
 from django import template
-import locale
+from django.utils import timezone
+from datetime import timedelta
 
 register = template.Library()
 
@@ -10,3 +11,12 @@ def real_brasileiro(valor):
         return "{:,.2f}".format(float(valor)).replace(",", "X").replace(".", ",").replace("X", ".")
     except (ValueError, TypeError):
         return valor
+
+# ADICIONADO O DECORADOR ABAIXO PARA CORRIGIR O ERRO 500
+@register.filter(name='eh_novo')
+def eh_novo(data):
+    if not data:
+        return False
+    # Define o limite de 48 horas atrás
+    limite = timezone.now() - timedelta(hours=48)
+    return data > limite

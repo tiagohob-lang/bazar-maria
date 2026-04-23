@@ -28,20 +28,62 @@ class Tamanho(models.Model):
 
     def __str__(self):
         return self.nome
-    
+
+class Cor(models.Model):
+    nome = models.CharField(max_length=30, unique=True) # Ex: "Preto", "Branco", "Azul", "Vermelho"
+
+    class Meta:
+        verbose_name_plural = "Cores"
+
+    def __str__(self):
+        return self.nome
+
 class Produto(models.Model):
+    CONDICAO_CHOICES = [
+        ('N', 'Novo'),
+        ('U', 'Usado'),
+    ]
+
+    ESTADO_CHOICES = [
+        (1, 'Regular'),
+        (2, 'Bom'),
+        (3, 'Ótimo'),
+        (4, 'Excelente'),
+    ]    
+
     titulo = models.CharField(max_length=200)
     descricao = models.TextField()
     tamanho = models.ForeignKey('Tamanho', on_delete=models.SET_NULL, null=True, blank=True)
+    condicao = models.CharField(max_length=1, choices=CONDICAO_CHOICES, default='U')
+    estado = models.IntegerField(choices=ESTADO_CHOICES, default=2)
     preco = models.DecimalField(max_digits=10, decimal_places=2)
-    
-    # Filtros robustos
-    publico = models.ForeignKey(Publico, on_delete=models.PROTECT)
-    tipo = models.ForeignKey(TipoRoupa, on_delete=models.PROTECT)
-    
+    publico = models.ForeignKey('Publico', on_delete=models.PROTECT)
+    tipo = models.ForeignKey('TipoRoupa', on_delete=models.PROTECT)
     imagem = models.ImageField(upload_to='produtos/', null=True, blank=True)
-    estoque = models.IntegerField(default=1) # No bazar geralmente é 1
+    estoque = models.IntegerField(default=1) 
+    material = models.CharField(max_length=100)
+    medidas = models.TextField(blank=True, help_text="Ex: Busto 90cm, Comprimento 60cm")
+    cor = models.ForeignKey('Cor', on_delete=models.SET_NULL, null=True, blank=True)
+    em_destaque = models.BooleanField(default=False)
+    vendido = models.BooleanField(default=False, verbose_name="Vendido?")
     criado_em = models.DateTimeField(auto_now_add=True)
 
+    def gerar_sku(self):
+        if not self.id:
+            return "Pendente"
+        return f"BM-{self.id:05d}"
+
     def __str__(self):
-        return f"{self.titulo} - {self.publico}"
+        # Usando o SKU no __str__ facilita muito a sua vida no Admin!
+        return f"{self.gerar_sku()} - {self.titulo}"
+    
+class ImagemProduto(models.Model):
+    produto = models.ForeignKey(Produto, related_name='imagens', on_delete=models.CASCADE)
+    imagem = models.ImageField(upload_to='produtos/galeria/')
+
+    class Meta:
+        verbose_name = "Imagem do Produto"
+        verbose_name_plural = "Galeria de Imagens"
+
+    def __str__(self):
+        return f"Foto de {self.produto.titulo}" 
