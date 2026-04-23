@@ -2,11 +2,7 @@
 set -o errexit
 
 pip install -r requirements.txt
-
 python manage.py collectstatic --no-input
 
-# Detecta mudanças novas
-python manage.py makemigrations core --no-input
-
-# Tenta aplicar ignorando conflitos de tabelas já existentes
+# O comando migrate vai usar o novo 0001_initial.py
 python manage.py migrate --fake-initial --no-input
