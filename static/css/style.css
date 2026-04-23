@@ -226,6 +226,42 @@ footer {
     opacity: 0.8;
 }
 
+.condicao-container {
+    margin-top: 20px;
+    max-width: 300px;
+}
+
+.barra-progresso-bg {
+    height: 8px;
+    /* Gradiente que muda de cor conforme a qualidade da peça */
+    background: linear-gradient(to right, #ffc107 0%, #ffc107 25%, #8bc34a 50%, #617c5f 100%);
+    border-radius: 10px;
+    position: relative;
+    margin-bottom: 5px;
+    /* Adiciona uma sombra interna leve para dar profundidade */
+    box-shadow: inset 0 1px 2px rgba(0,0,0,0.1);
+}
+
+.marcador {
+    width: 16px;
+    height: 16px;
+    background-color: #617c5f; 
+    border: 2px solid #ffffff; /* Borda branca para contraste */
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    transform: translate(-50%, -50%);
+    transition: left 0.3s ease;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
+
+.labels-condicao {
+    display: flex;
+    justify-content: space-between;
+    font-size: 0.7rem;
+    color: #6c757d;
+    font-weight: 500;
+}
 
 /* ==========================================
    5. RESPONSIVIDADE (O PONTO CHAVE)
