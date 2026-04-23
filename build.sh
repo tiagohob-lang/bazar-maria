@@ -1,8 +1,12 @@
 #!/usr/bin/env bash
-# exit on error
 set -o errexit
 
 pip install -r requirements.txt
 
 python manage.py collectstatic --no-input
-python manage.py migrate
+
+# Detecta mudanças novas
+python manage.py makemigrations --no-input
+
+# Tenta aplicar ignorando conflitos de tabelas já existentes
+python manage.py migrate --fake-initial --no-input
