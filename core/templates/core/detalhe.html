@@ -2,7 +2,7 @@
 {% load meus_filtros %}
 {% load l10n %}
 
-{% block title %}{{ produto.titulo }} - Bazar Maria{% endblock %}
+{% block title %}{{ produto.titulo }} - Bazar Maria Maia{% endblock %}
 
 {% block content %}
 <div class="container mt-3 pt-1">
@@ -179,7 +179,7 @@
 
             <div class="mt-auto pt-4">
                 {% if not produto.vendido %}
-                    <a href="https://wa.me/5531988377052?text=Olá! Tenho interesse na peça: {{ produto.titulo }} (Ref: {{ produto.gerar_sku }}). Vi no site por R$ {{ produto.preco|real_brasileiro }}. Ainda está disponível?" 
+                    <a href="https://wa.me/5531986243118?text=Olá! Tenho interesse na peça: {{ produto.titulo }} (Ref: {{ produto.gerar_sku }}). Vi no site por R$ {{ produto.preco|real_brasileiro }}. Ainda está disponível?" 
                        target="_blank" class="btn btn-success btn-lg w-100 py-3 fw-bold shadow-sm" style="background-color: #25d366; border: none;">
                         <i class="bi bi-whatsapp"></i> Tenho Interesse (WhatsApp)
                     </a>                    
