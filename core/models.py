@@ -31,6 +31,7 @@ class Tamanho(models.Model):
 
 class Cor(models.Model):
     nome = models.CharField(max_length=30, unique=True) # Ex: "Preto", "Branco", "Azul", "Vermelho"
+    codigo = models.CharField(max_length=7, default="#FFFFFF", help_text="Ex: #FF0000")
 
     class Meta:
         verbose_name_plural = "Cores"
