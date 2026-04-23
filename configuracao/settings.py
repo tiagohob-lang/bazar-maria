@@ -39,7 +39,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY', 'django-insecure-v5$6*s$_&p2^!l!%9k0k)cb-#&^1j)xxh=mc-y8z6mnj=o611!')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = False
+DEBUG = True
 
 ALLOWED_HOSTS = ['bazar-maria.onrender.com', 'localhost', '127.0.0.1']
 
